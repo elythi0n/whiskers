@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Manifests and hooks are valid JSON
+        run: |
+          for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json hooks/hooks.json; do
+            jq empty "$f" || { echo "::error file=$f::not valid JSON"; exit 1; }
+          done
+
+      - name: Plugin and changelog versions agree
+        run: |
+          have=$(jq -r .version .claude-plugin/plugin.json)
+          grep -q "^## $have\$" CHANGELOG.md || { echo "::error file=CHANGELOG.md::no '## $have' section for plugin.json version $have"; exit 1; }

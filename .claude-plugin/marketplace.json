@@ -1,0 +1,12 @@
+{
+  "name": "whiskers",
+  "description": "Whiskers: a tiny status line for Claude Code",
+  "owner": { "name": "Marcos Raudkett (Elythion)" },
+  "plugins": [
+    {
+      "name": "whiskers",
+      "source": "./",
+      "description": "Shows model, effort, usage limits, and context under the prompt"
+    }
+  ]
+}

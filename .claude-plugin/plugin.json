@@ -1,0 +1,85 @@
+{
+  "name": "whiskers",
+  "displayName": "Whiskers",
+  "version": "0.4.0",
+  "description": "A tiny status line by the prompt: model, effort, usage limits, spending pace, and context",
+  "author": {
+    "name": "Marcos Raudkett (Elythion)"
+  },
+  "repository": "https://github.com/elythi0n/whiskers",
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "position": {
+      "type": "string",
+      "title": "Position",
+      "description": "above: a coloured line just above the prompt. below: a dim line after the hint under the prompt.",
+      "default": "below",
+      "options": [
+        "above",
+        "below"
+      ]
+    },
+    "showModel": {
+      "type": "boolean",
+      "title": "Show model",
+      "description": "🐱 The model in use",
+      "default": true
+    },
+    "showEffort": {
+      "type": "boolean",
+      "title": "Show effort",
+      "description": "⚡ The effort level",
+      "default": true
+    },
+    "showUsage": {
+      "type": "boolean",
+      "title": "Show usage limits",
+      "description": "📊 How much of your usage limits is used",
+      "default": true
+    },
+    "showBurnRate": {
+      "type": "boolean",
+      "title": "Show burn rate",
+      "description": "↗ How fast the 5 hour limit fills, when it is moving",
+      "default": true
+    },
+    "showTokens": {
+      "type": "boolean",
+      "title": "Show token pace",
+      "description": "🧶 Tokens spent this minute, with 🔥 or 🙀 when the pace would hit your 5 hour limit",
+      "default": true
+    },
+    "showTokenChart": {
+      "type": "boolean",
+      "title": "Show token chart",
+      "description": "▁▃▅ Bars for the last 8 minutes next to the token pace",
+      "default": true
+    },
+    "showContext": {
+      "type": "boolean",
+      "title": "Show context",
+      "description": "🧠 How full the context window is",
+      "default": true
+    },
+    "showEdits": {
+      "type": "boolean",
+      "title": "Show edits",
+      "description": "🐾 Files and lines changed this prompt (needs Pawprints)",
+      "default": true
+    },
+    "sendLimits": {
+      "type": "boolean",
+      "title": "Send limits to Pawprints",
+      "description": "When Pawprints is installed, store each usage-limit reading so its web view can chart your 5 hour and weekly limits over time. Nothing leaves this machine.",
+      "default": true
+    }
+  },
+  "keywords": [
+    "effort",
+    "model",
+    "statusline",
+    "tokens",
+    "usage"
+  ]
+}

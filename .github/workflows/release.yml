@@ -1,0 +1,43 @@
+name: Release
+
+# Pushing a tag like v0.5.0 publishes a GitHub release with that version's
+# CHANGELOG.md section. The plugin itself installs from the repo.
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches plugin.json
+        run: |
+          have=$(jq -r .version .claude-plugin/plugin.json)
+          if [ "$have" != "${VERSION#v}" ]; then
+            echo "::error file=.claude-plugin/plugin.json::version is $have, tag is $VERSION"
+            exit 1
+          fi
+
+      - name: Release notes from CHANGELOG.md
+        run: |
+          awk -v v="${VERSION#v}" '/^## / { if (p) exit; p = ($2 == v || $2 == "v" v); next } p' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          if [ ! -s "$RUNNER_TEMP/notes.md" ]; then
+            echo "::error file=CHANGELOG.md::no '## ${VERSION#v}' section"
+            exit 1
+          fi
+
+      - name: Publish
+        run: |
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "$VERSION is already released"
+            exit 1
+          fi
+          gh release create "$VERSION" --verify-tag --title "$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
